@@ -1,0 +1,125 @@
+{
+	"info": {
+		"_postman_id": "c680e65c-aaa2-45ca-9815-ad088f443fda",
+		"name": "battleApi",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create battle with misty & ash",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7b0c098c-bd9b-4594-b3e9-81199be94a17",
+						"exec": [
+							"pm.test(\"Create battle\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.environment.set(\"gameUuid\", jsonData);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:9001/battles?dresseur1=Misty&dresseur2=Ash",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"battles"
+					],
+					"query": [
+						{
+							"key": "dresseur1",
+							"value": "Misty"
+						},
+						{
+							"key": "dresseur2",
+							"value": "Ash"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get board",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7b0c098c-bd9b-4594-b3e9-81199be94a17",
+						"exec": [
+							"pm.test(\"Receive board\", function () {\r",
+							"    var game = pm.response.json();\r",
+							"    pm.expect(game.trainer.name).to.eq(\"Misty\");\r",
+							"    pm.expect(game.opponent.name).to.eq(\"Ash\");\r",
+							"    pm.expect(game.opponent.nextTurn).to.eq(true);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:9001/battles/{{gameUuid}}",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"battles",
+						"{{gameUuid}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AshAttack",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7b0c098c-bd9b-4594-b3e9-81199be94a17",
+						"exec": [
+							"pm.test(\"Receive board\", function () {\r",
+							"    var game = pm.response.json();\r",
+							"    pm.expect(game.trainer.team.name).to.eq(\"Misty\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:9001/battles/{{gameUuid}}/Ash/attack",
+					"host": [
+						"localhost"
+					],
+					"port": "9001",
+					"path": [
+						"battles",
+						"{{gameUuid}}",
+						"Ash",
+						"attack"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
