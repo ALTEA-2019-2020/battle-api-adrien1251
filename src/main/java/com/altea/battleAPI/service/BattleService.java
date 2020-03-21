@@ -1,14 +1,14 @@
 package com.altea.battleAPI.service;
 
 import com.altea.battleAPI.bo.Battle;
-import com.altea.battleAPI.bo.PokemonWithLvl;
+import com.altea.battleAPI.bo.Pokemon;
 import com.altea.battleAPI.bo.TrainerWithPokemons;
 import com.altea.battleAPI.exceptions.ApplicationException;
 import com.altea.battleAPI.repository.BattleRepository;
+import com.altea.battleAPI.service.factory.BattleFactory;
 import com.altea.battleAPI.trainer.service.TrainerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 
 import java.util.Map;
 import java.util.UUID;
@@ -17,17 +17,22 @@ import java.util.UUID;
 public class BattleService {
     private final BattleRepository battleRepository;
 
+    private final BattleFactory battleFactory;
+
     private final TrainerService trainerService;
 
-    public BattleService(BattleRepository battleRepository, TrainerService trainerService) {
+    public BattleService(BattleRepository battleRepository, BattleFactory battleFactory, TrainerService trainerService) {
         this.battleRepository = battleRepository;
+        this.battleFactory = battleFactory;
         this.trainerService = trainerService;
     }
 
     public UUID createBattle(String trainer, String opponent) {
-        return battleRepository.createBattle(
-                trainerService.getTrainer(trainer),
-                trainerService.getTrainer(opponent)
+        return battleRepository.save(
+                battleFactory.createBattle(
+                    trainerService.getTrainer(trainer),
+                    trainerService.getTrainer(opponent)
+                )
         );
     }
 
@@ -94,7 +99,7 @@ public class BattleService {
         return battle;
     }
 
-    private PokemonWithLvl getCurrentPokemon(TrainerWithPokemons trainer) {
+    private Pokemon getCurrentPokemon(TrainerWithPokemons trainer) {
         try {
             return trainer.getTeam().get(trainer.getCurrentPokemon());
         } catch (ArrayIndexOutOfBoundsException e) {

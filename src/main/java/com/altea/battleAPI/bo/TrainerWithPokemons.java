@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import net.minidev.json.annotate.JsonIgnore;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -21,6 +20,6 @@ public class TrainerWithPokemons implements Serializable {
     private Trainer trainer;
     private String name;
     private int currentPokemon = 0;
-    private List<PokemonWithLvl> team = new ArrayList<>();
+    private List<Pokemon> team = new ArrayList<>();
     private boolean nextTurn = false;
 }

@@ -11,7 +11,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
-public class Pokemon implements Serializable {
+public class ShortPokemon implements Serializable {
     private int pokemonTypeId;
 
     private int level;

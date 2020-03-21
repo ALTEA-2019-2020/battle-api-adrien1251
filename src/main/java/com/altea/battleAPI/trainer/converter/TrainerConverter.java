@@ -1,12 +1,12 @@
 package com.altea.battleAPI.trainer.converter;
 
-import com.altea.battleAPI.bo.PokemonWithLvl;
+import com.altea.battleAPI.bo.Pokemon;
 import com.altea.battleAPI.bo.TrainerWithPokemons;
 import com.altea.battleAPI.pokemonTypes.bo.PokemonType;
 import com.altea.battleAPI.pokemonTypes.service.PokemonTypeService;
-import com.altea.battleAPI.trainer.bo.Pokemon;
+import com.altea.battleAPI.service.factory.PokemonFactory;
+import com.altea.battleAPI.trainer.bo.ShortPokemon;
 import com.altea.battleAPI.trainer.bo.Trainer;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -15,32 +15,35 @@ import java.util.stream.Collectors;
 
 @Component
 public class TrainerConverter {
-    @Autowired
-    private PokemonTypeService pokemonTypeService;
+    private final PokemonTypeService pokemonTypeService;
+
+    private final PokemonFactory pokemonFactory;
+
+    public TrainerConverter(PokemonTypeService pokemonTypeService, PokemonFactory pokemonFactory) {
+        this.pokemonTypeService = pokemonTypeService;
+        this.pokemonFactory = pokemonFactory;
+    }
 
     public TrainerWithPokemons trainerToTrainerWithPokemons(Trainer trainer) {
-        List<Integer> ids = trainer.getTeam().stream().map(Pokemon::getPokemonTypeId).collect(Collectors.toList());
+        List<Integer> ids = trainer.getTeam().stream().map(ShortPokemon::getPokemonTypeId).collect(Collectors.toList());
 
         List<PokemonType> pokemonTypes = pokemonTypeService.listPokemonsTypes(ids);
 
-        List<PokemonWithLvl> pokemonWithLvls = new ArrayList<>();
+        List<Pokemon> pokemons = new ArrayList<>();
 
-        trainer.getTeam().stream().forEach(pokemon -> {
-            pokemonWithLvls.add(
-                    new PokemonWithLvl(
-
-                            pokemon.getLevel(),
-                            pokemonTypes.stream()
-                                    .filter(pokemonType -> pokemon.getPokemonTypeId() == pokemonType.getId())
-                                    .findAny().get()
-                    )
+        trainer.getTeam().forEach(pokemon -> {
+            pokemons.add(pokemonFactory.createPokemon(
+                    pokemon.getLevel(),
+                    pokemonTypes.stream()
+                            .filter(pokemonType -> pokemon.getPokemonTypeId() == pokemonType.getId())
+                            .findAny().get())
             );
         });
 
         return TrainerWithPokemons.builder()
                 .trainer(trainer)
                 .name(trainer.getName())
-                .team(pokemonWithLvls)
+                .team(pokemons)
                 .build();
     }
 }

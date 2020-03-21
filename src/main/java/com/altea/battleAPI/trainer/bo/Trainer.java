@@ -18,5 +18,5 @@ public class Trainer implements Serializable {
 
     private String password;
 
-    private List<Pokemon> team = new ArrayList<>();
+    private List<ShortPokemon> team = new ArrayList<>();
 }
