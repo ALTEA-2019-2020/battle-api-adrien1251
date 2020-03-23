@@ -2,9 +2,9 @@ package com.altea.battleAPI.service.factory;
 
 import com.altea.battleAPI.bo.Battle;
 import com.altea.battleAPI.bo.TrainerWithPokemons;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
-@Service
+@Component
 public class BattleFactory {
     public Battle createBattle(TrainerWithPokemons trainer, TrainerWithPokemons opponent) {
         Battle battle = new Battle(trainer, opponent);

@@ -7,6 +7,7 @@ import com.altea.battleAPI.exceptions.ApplicationException;
 import com.altea.battleAPI.repository.BattleRepository;
 import com.altea.battleAPI.service.factory.BattleFactory;
 import com.altea.battleAPI.trainer.service.TrainerService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ public class BattleService {
 
     private final TrainerService trainerService;
 
+    @Autowired
     public BattleService(BattleRepository battleRepository, BattleFactory battleFactory, TrainerService trainerService) {
         this.battleRepository = battleRepository;
         this.battleFactory = battleFactory;

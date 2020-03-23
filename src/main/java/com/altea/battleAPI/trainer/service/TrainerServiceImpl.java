@@ -1,7 +1,6 @@
 package com.altea.battleAPI.trainer.service;
 
 import com.altea.battleAPI.bo.TrainerWithPokemons;
-import com.altea.battleAPI.pokemonTypes.service.PokemonTypeService;
 import com.altea.battleAPI.trainer.bo.Trainer;
 import com.altea.battleAPI.trainer.converter.TrainerConverter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,20 +21,17 @@ public class TrainerServiceImpl implements TrainerService {
 
     private String trainerServiceUrl;
 
-    private PokemonTypeService pokemonTypeService;
+    private final TrainerConverter trainerConverter;
 
     @Autowired
-    private TrainerConverter trainerConverter;
+    public TrainerServiceImpl(TrainerConverter trainerConverter) {
+        this.trainerConverter = trainerConverter;
+    }
 
     @Autowired
     @Qualifier("trainerApiRestTemplate")
     void setRestTemplate(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
-    }
-
-    @Autowired
-    void setPokemonTypeService(PokemonTypeService pokemonTypeService) {
-        this.pokemonTypeService = pokemonTypeService;
     }
 
     @Value("${trainers.service.url}")

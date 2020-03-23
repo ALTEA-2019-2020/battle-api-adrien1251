@@ -3,11 +3,11 @@ package com.altea.battleAPI.controller;
 import com.altea.battleAPI.bo.Battle;
 import com.altea.battleAPI.exceptionHandler.ExceptionCatcher;
 import com.altea.battleAPI.service.BattleService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 
@@ -16,6 +16,7 @@ import java.util.UUID;
 public class BattleController extends ExceptionCatcher {
     private final BattleService battleService;
 
+    @Autowired
     public BattleController(BattleService battleService) {
         this.battleService = battleService;
     }
