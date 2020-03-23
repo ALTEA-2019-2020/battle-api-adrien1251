@@ -27,7 +27,7 @@ public class BattleService {
         this.trainerService = trainerService;
     }
 
-    public UUID createBattle(String trainer, String opponent) {
+    public Battle createBattle(String trainer, String opponent) {
         return battleRepository.save(
                 battleFactory.createBattle(
                     trainerService.getTrainer(trainer),

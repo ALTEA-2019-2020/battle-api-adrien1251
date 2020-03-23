@@ -14,10 +14,10 @@ import java.util.UUID;
 public class BattleRepository {
     private Map<UUID, Battle> battles = new HashMap<>();
 
-    public UUID save(Battle battle) {
+    public Battle save(Battle battle) {
         battles.put(battle.getUuid(), battle);
 
-        return battle.getUuid();
+        return battle;
     }
 
     public Battle findBattle(UUID uuid) {

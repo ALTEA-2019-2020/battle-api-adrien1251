@@ -21,8 +21,8 @@ public class BattleController extends ExceptionCatcher {
     }
 
     @PostMapping
-    public ResponseEntity<UUID> createBattle(@RequestParam String dresseur1, @RequestParam String dresseur2) {
-        return ResponseEntity.ok(battleService.createBattle(dresseur1, dresseur2));
+    public ResponseEntity<Battle> createBattle(@RequestParam String trainer, @RequestParam String opponent) {
+        return ResponseEntity.ok(battleService.createBattle(trainer, opponent));
     }
 
     @GetMapping(value = "/{uuid}")
